@@ -14,7 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Counter.CountService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+533328e94656ea97f6a740bac471f87235df9c70")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1a4042fc19256eb634f4d121a67479b97c3e240e")]
+>>>>>>> origin/CounterServices
 [assembly: System.Reflection.AssemblyProductAttribute("Counter.CountService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Counter.CountService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

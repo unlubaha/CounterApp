@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Counter.CountService\Counter.CountService.csproj" />
+    <ProjectReference Include="..\Counter.Entities\Counter.Entities.csproj" />
   </ItemGroup>
 
 </Project>

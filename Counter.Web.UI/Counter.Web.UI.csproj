@@ -36,6 +36,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Counter.Entities\Counter.Entities.csproj">
+      <Project>{cac51219-952e-41c5-b416-3f6f215e4471}</Project>
+      <Name>Counter.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Counter.Shared\Counter.Shared.csproj">
       <Project>{34bd248e-7138-4111-8516-e6935bca50a7}</Project>
       <Name>Counter.Shared</Name>

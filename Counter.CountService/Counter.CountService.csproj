@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Counter.Entities\Counter.Entities.csproj" />
     <ProjectReference Include="..\Counter.Shared\Counter.Shared.csproj" />
   </ItemGroup>
 

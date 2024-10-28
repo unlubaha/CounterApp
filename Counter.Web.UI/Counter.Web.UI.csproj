@@ -35,5 +35,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Counter.Shared\Counter.Shared.csproj">
+      <Project>{34bd248e-7138-4111-8516-e6935bca50a7}</Project>
+      <Name>Counter.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

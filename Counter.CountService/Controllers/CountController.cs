@@ -1,38 +1,43 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Counter.CountService.Services;
+using Counter.Entities;
+using Counter.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Counter.CountService.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class CountController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICountService _countService;
 
-        public CountController(ApplicationDbContext context)
+        public CountController(ICountService countService)
         {
-            _context = context;
+            _countService = countService;
         }
 
         [HttpGet("{seriNumarasi}/son-olcum")]
-        public IActionResult GetSonOlcum(string seriNumarasi)
+        public async Task<IActionResult> GetSonOlcum(string seriNumarasi)
         {
-            var olcum = _context.SayacOlcumler
-                .Where(o => o.SeriNumarasi == seriNumarasi)
-                .OrderByDescending(o => o.OlcumZamani)
-                .FirstOrDefault();
+            var olcum = await _countService.GetSonOlcumAsync(seriNumarasi);
             return olcum != null ? Ok(olcum) : NotFound("Ölçüm bulunamadı.");
         }
 
         [HttpPost("olcum-ekle")]
-        public IActionResult AddOlcum([FromBody] SayacOlcum olcum)
+        public async Task<IActionResult> AddOlcum([FromBody] CountDTO olcum)
         {
-            _context.SayacOlcumler.Add(olcum);
-            _context.SaveChanges();
-            return Ok("Ölçüm başarıyla eklendi.");
+            if (olcum == null)
+            {
+                return BadRequest("Geçersiz ölçüm verisi.");
+            }
+
+            if (string.IsNullOrEmpty(olcum.SeriNumarasi) || olcum.SeriNumarasi.Length != 8)
+            {
+                return BadRequest("Seri numarası 8 karakter olmalıdır.");
+            }
+
+            var result = await _countService.AddOlcumAsync(olcum);
+            return Ok(result);
         }
     }
-
 }
-

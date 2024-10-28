@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Counter.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Counter.ReportService.Controllers
 {
@@ -15,7 +17,7 @@ namespace Counter.ReportService.Controllers
         }
 
         [HttpPost("olustur")]
-        public IActionResult CreateRapor([FromQuery] string seriNumarasi)
+        public IActionResult CreateRapor([FromBody] string seriNumarasi) // [FromBody] kullanabilirsiniz
         {
             var olcumler = _context.SayacOlcumler
                 .Where(o => o.SeriNumarasi == seriNumarasi)
@@ -29,11 +31,19 @@ namespace Counter.ReportService.Controllers
                 UUID = Guid.NewGuid(),
                 TalepTarihi = DateTime.Now,
                 Durum = "Hazırlanıyor",
-                Icerik = GenerateRaporContent(olcumler) // Rapor içeriği hazırlama fonksiyonu
+                Icerik = GenerateRaporContent(olcumler)
             };
 
-            _context.Raporlar.Add(rapor);
-            _context.SaveChanges();
+            try
+            {
+                _context.Raporlar.Add(rapor);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Rapor oluşturulurken hata oluştu: " + ex.Message);
+            }
+
             return Ok("Rapor isteği başarıyla oluşturuldu.");
         }
 
@@ -53,12 +63,10 @@ namespace Counter.ReportService.Controllers
 
         private string GenerateRaporContent(List<SayacOlcum> olcumler)
         {
-            // Burada CSV, Excel veya TXT formatına uygun içerik hazırlama işlemi yapılabilir.
-            return string.Join(Environment.NewLine, olcumler.Select(o =>
+            var header = "Olcum Zamanı, Son Endeks, Voltaj, Akım"; // Başlık ekleyin
+            var content = string.Join(Environment.NewLine, olcumler.Select(o =>
                 $"{o.OlcumZamani}, {o.SonEndeks}, {o.Voltaj}, {o.Akim}"));
+            return $"{header}\n{content}"; // Başlık ile içeriği birleştirin
         }
     }
 }
-
-
-

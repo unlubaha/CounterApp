@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Counter.Web.UI", "Counter.Web.UI\Counter.Web.UI.csproj", "{DC2DB51E-D14E-4FB9-B843-CC7DBEC8F24E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Counter.CountService", "Counter.CountService\Counter.CountService.csproj", "{A390697A-3434-4783-A4F4-3B820F9D8078}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Counter.ReportService", "Counter.ReportService\Counter.ReportService.csproj", "{7B000514-D1D5-4CB0-B9FA-93B4529FC577}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Counter.Shared", "Counter.Shared\Counter.Shared.csproj", "{34BD248E-7138-4111-8516-E6935BCA50A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Counter.Entities", "Counter.Entities\Counter.Entities.csproj", "{CAC51219-952E-41C5-B416-3F6F215E4471}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Counter.Entities", "Counter.Entities\Counter.Entities.csproj", "{CAC51219-952E-41C5-B416-3F6F215E4471}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Counter.Web.UI", "Counter.Web.UI\Counter.Web.UI.csproj", "{EBF2A4DB-CBDE-402A-9CF7-821273445EDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Counter.Web.UI.Tests", "Counter.Web.UI.Tests\Counter.Web.UI.Tests.csproj", "{CCC32715-3F66-4592-8D3C-46A84D193919}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DC2DB51E-D14E-4FB9-B843-CC7DBEC8F24E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC2DB51E-D14E-4FB9-B843-CC7DBEC8F24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC2DB51E-D14E-4FB9-B843-CC7DBEC8F24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC2DB51E-D14E-4FB9-B843-CC7DBEC8F24E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A390697A-3434-4783-A4F4-3B820F9D8078}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A390697A-3434-4783-A4F4-3B820F9D8078}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A390697A-3434-4783-A4F4-3B820F9D8078}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +37,14 @@ Global
 		{CAC51219-952E-41C5-B416-3F6F215E4471}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAC51219-952E-41C5-B416-3F6F215E4471}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAC51219-952E-41C5-B416-3F6F215E4471}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBF2A4DB-CBDE-402A-9CF7-821273445EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF2A4DB-CBDE-402A-9CF7-821273445EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF2A4DB-CBDE-402A-9CF7-821273445EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF2A4DB-CBDE-402A-9CF7-821273445EDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCC32715-3F66-4592-8D3C-46A84D193919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCC32715-3F66-4592-8D3C-46A84D193919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCC32715-3F66-4592-8D3C-46A84D193919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCC32715-3F66-4592-8D3C-46A84D193919}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

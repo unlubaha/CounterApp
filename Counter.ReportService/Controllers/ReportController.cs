@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Counter.Shared.DTOs;
+using Counter.Shared.Enums;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Counter.ReportService.Controllers
 {
@@ -16,27 +19,33 @@ namespace Counter.ReportService.Controllers
             _context = context;
         }
 
-        [HttpPost("olustur")]
-        public IActionResult CreateRapor([FromBody] string seriNumarasi) // [FromBody] kullanabilirsiniz
+        [HttpPost("CreateReport")]
+        public IActionResult CreateReport([FromBody] string seriNumarasi)
         {
-            var olcumler = _context.SayacOlcumler
+            var olcumler = _context.Counters
                 .Where(o => o.SeriNumarasi == seriNumarasi)
                 .OrderByDescending(o => o.OlcumZamani).ToList();
 
             if (!olcumler.Any())
                 return NotFound("Veri bulunamadı.");
 
-            var rapor = new Rapor
+            var rapor = new ReportDTO()
             {
                 UUID = Guid.NewGuid(),
                 TalepTarihi = DateTime.Now,
-                Durum = "Hazırlanıyor",
-                Icerik = GenerateRaporContent(olcumler)
+                Durum = RaporDurumu.Hazirlaniyor,
+                Icerik = new Icerik
+                {
+                    OlcumZamani = olcumler.First().OlcumZamani,
+                    SonEndeks = (int)olcumler.First().SonEndeks,
+                    Voltaj = olcumler.First().Voltaj,
+                    Akim = olcumler.First().Akim
+                }
             };
 
             try
             {
-                _context.Raporlar.Add(rapor);
+                _context.Reports.Add(rapor);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -48,25 +57,17 @@ namespace Counter.ReportService.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetRaporlar()
+        public IActionResult GetReports()
         {
-            var raporlar = _context.Raporlar.ToList();
+            var raporlar = _context.Reports.ToList();
             return Ok(raporlar);
         }
 
         [HttpGet("{uuid}")]
-        public IActionResult GetRaporDetay(Guid uuid)
+        public IActionResult GetReportDetail(Guid uuid)
         {
-            var rapor = _context.Raporlar.Find(uuid);
+            var rapor = _context.Reports.Find(uuid);
             return rapor != null ? Ok(rapor) : NotFound("Rapor bulunamadı.");
-        }
-
-        private string GenerateRaporContent(List<SayacOlcum> olcumler)
-        {
-            var header = "Olcum Zamanı, Son Endeks, Voltaj, Akım"; // Başlık ekleyin
-            var content = string.Join(Environment.NewLine, olcumler.Select(o =>
-                $"{o.OlcumZamani}, {o.SonEndeks}, {o.Voltaj}, {o.Akim}"));
-            return $"{header}\n{content}"; // Başlık ile içeriği birleştirin
         }
     }
 }

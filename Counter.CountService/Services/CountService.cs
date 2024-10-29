@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.Metrics;
 using Counter.Entities;
 using Counter.Shared.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Counter.CountService.Services
@@ -14,37 +15,60 @@ namespace Counter.CountService.Services
             _context = context;
         }
 
-        public async Task<CountDTO?> GetSonOlcumAsync(string seriNumarasi)
+        public async Task<CountResponseDTO?> GetLastCountAsync(string seriNumarasi)
         {
+            if (string.IsNullOrWhiteSpace(seriNumarasi))
+            {
+                throw new ArgumentException("Seri numarası boş olamaz.");
+            }
+
             return await _context.Counters
                 .Where(o => o.SeriNumarasi == seriNumarasi)
                 .OrderByDescending(o => o.OlcumZamani)
+                .Select(o => new CountResponseDTO
+                {
+                    UUID = o.UUID,
+                    SeriNumarasi = o.SeriNumarasi,
+                    OlcumZamani = o.OlcumZamani,
+                    SonEndeks = o.SonEndeks,
+                    Voltaj = o.Voltaj,
+                    Akim = o.Akim
+                })
                 .FirstOrDefaultAsync();
         }
-        public async Task<string> AddOlcumAsync(CountDTO olcum)
+        public async Task<string> AddCountAsync(CountRequestDTO count)
         {
             try
             {
-                var newCounter = new CountDTO
-                {
-                    SeriNumarasi = olcum.SeriNumarasi,
-                    OlcumZamani = DateTime.Now,
-                    SonEndeks = olcum.SonEndeks,
-                    Voltaj = olcum.Voltaj,
-                    Akim = olcum.Akim
-                };
-
-                _context.Counters.Add(newCounter);
+                _context.Counters.Add(count);
                 await _context.SaveChangesAsync();
 
                 return "Ölçüm başarıyla eklendi.";
             }
             catch (Exception ex)
             {
-                // Log the exception (not shown here)
-                return "Ölçüm eklenirken bir hata oluştu.";
+                return "Ölçüm eklenirken bir hata oluştu:" + ex.Message;
             }
         }
-
+        public async Task<List<CountResponseDTO>> GetCountsAsync(string seriNumarasi)
+        {
+            if (string.IsNullOrWhiteSpace(seriNumarasi))
+            {
+                throw new ArgumentException("Seri numarası boş olamaz.");
+            }
+            return await _context.Counters
+                .Where(m => m.SeriNumarasi == seriNumarasi)
+                .OrderByDescending(m => m.OlcumZamani)
+                .Select(m => new CountResponseDTO
+                {
+                    UUID = m.UUID,
+                    SeriNumarasi = m.SeriNumarasi,
+                    OlcumZamani = m.OlcumZamani,
+                    SonEndeks = m.SonEndeks,
+                    Voltaj = m.Voltaj,
+                    Akim = m.Akim
+                })
+                .ToListAsync();
+        }
     }
 }

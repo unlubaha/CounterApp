@@ -16,27 +16,27 @@ namespace Counter.CountService.Controllers
             _countService = countService;
         }
 
-        [HttpGet("{seriNumarasi}/son-olcum")]
-        public async Task<IActionResult> GetSonOlcum(string seriNumarasi)
+        [HttpGet("LastCount")]
+        public async Task<IActionResult> GetLastCount(string seriNumarasi)
         {
-            var olcum = await _countService.GetSonOlcumAsync(seriNumarasi);
-            return olcum != null ? Ok(olcum) : NotFound("Ölçüm bulunamadı.");
+            var Count = await _countService.GetLastCountAsync(seriNumarasi);
+            return Count != null ? Ok(Count) : NotFound("Ölçüm bulunamadı.");
         }
 
-        [HttpPost("olcum-ekle")]
-        public async Task<IActionResult> AddOlcum([FromBody] CountDTO olcum)
+        [HttpPost("AddCount")]
+        public async Task<IActionResult> AddCount([FromBody] CountRequestDTO Count)
         {
-            if (olcum == null)
+            if (Count == null)
             {
                 return BadRequest("Geçersiz ölçüm verisi.");
             }
 
-            if (string.IsNullOrEmpty(olcum.SeriNumarasi) || olcum.SeriNumarasi.Length != 8)
+            if (string.IsNullOrEmpty(Count.SeriNumarasi) || Count.SeriNumarasi.Length != 8)
             {
                 return BadRequest("Seri numarası 8 karakter olmalıdır.");
             }
 
-            var result = await _countService.AddOlcumAsync(olcum);
+            var result = await _countService.AddCountAsync(Count);
             return Ok(result);
         }
     }

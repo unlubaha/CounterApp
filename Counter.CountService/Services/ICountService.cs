@@ -4,7 +4,8 @@ namespace Counter.CountService.Services
 {
     public interface ICountService
     {
-        Task<CountDTO?> GetSonOlcumAsync(string seriNumarasi);
-        Task<string> AddOlcumAsync(CountDTO olcum);
+        Task<CountResponseDTO?> GetLastCountAsync(string seriNumarasi);
+        Task<string> AddCountAsync(CountRequestDTO count);
+        Task<List<CountResponseDTO>> GetCountsAsync(string seriNumarasi);
     }
 }

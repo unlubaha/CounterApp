@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//if you need different database for every service
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
 //        b => b.MigrationsAssembly("Counter.ReportService")));
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql());
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IReportService, ReportService>();
 
@@ -18,6 +18,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+var rabbitMqService = new RabbitMqService(builder.Configuration["RabbitMQ:HostName"]);
+rabbitMqService.StartListening(app.Services.GetRequiredService<IReportService>());
 
 if (app.Environment.IsDevelopment())
 {

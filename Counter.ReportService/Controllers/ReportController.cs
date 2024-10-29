@@ -1,10 +1,6 @@
-﻿using Counter.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Counter.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using Counter.Shared.DTOs;
-using Counter.Shared.Enums;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Counter.ReportService.Services;
 
 namespace Counter.ReportService.Controllers
 {
@@ -12,62 +8,25 @@ namespace Counter.ReportService.Controllers
     [Route("api/[controller]")]
     public class ReportController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IReportService _reportService;
 
-        public ReportController(ApplicationDbContext context)
+        public ReportController(IReportService reportService)
         {
-            _context = context;
+            _reportService = reportService;
         }
 
-        [HttpPost("CreateReport")]
-        public IActionResult CreateReport([FromBody] string seriNumarasi)
+        [HttpGet("Reports")]
+        public async Task<IActionResult> GetReports()
         {
-            var olcumler = _context.Counters
-                .Where(o => o.SeriNumarasi == seriNumarasi)
-                .OrderByDescending(o => o.OlcumZamani).ToList();
-
-            if (!olcumler.Any())
-                return NotFound("Veri bulunamadı.");
-
-            var rapor = new ReportDTO()
-            {
-                UUID = Guid.NewGuid(),
-                TalepTarihi = DateTime.Now,
-                Durum = RaporDurumu.Hazirlaniyor,
-                Icerik = new Icerik
-                {
-                    OlcumZamani = olcumler.First().OlcumZamani,
-                    SonEndeks = (int)olcumler.First().SonEndeks,
-                    Voltaj = olcumler.First().Voltaj,
-                    Akim = olcumler.First().Akim
-                }
-            };
-
-            try
-            {
-                _context.Reports.Add(rapor);
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Rapor oluşturulurken hata oluştu: " + ex.Message);
-            }
-
-            return Ok("Rapor isteği başarıyla oluşturuldu.");
+            var reports = await _reportService.GetReportsAsync();
+            return Ok(reports);
         }
 
-        [HttpGet]
-        public IActionResult GetReports()
+        [HttpGet("Reports/{uuid}")]
+        public async Task<IActionResult> GetReportById(Guid uuid)
         {
-            var raporlar = _context.Reports.ToList();
-            return Ok(raporlar);
-        }
-
-        [HttpGet("{uuid}")]
-        public IActionResult GetReportDetail(Guid uuid)
-        {
-            var rapor = _context.Reports.Find(uuid);
-            return rapor != null ? Ok(rapor) : NotFound("Rapor bulunamadı.");
+            var report = await _reportService.GetReportByIdAsync(uuid);
+            return report != null ? Ok(report) : NotFound("Rapor bulunamadı.");
         }
     }
 }

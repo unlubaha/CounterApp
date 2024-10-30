@@ -8,13 +8,13 @@ The Counter App features a reporting structure supported by RabbitMQ messaging q
 
 ## Technologies Used (Optional)
 
-.NET Core 8.0: The main framework for building the application with modern features.
-.NET Standard 2.0: Provides a set of APIs that can be used across different .NET implementations.
-.NET Framework 4.8: Supports legacy applications and enables integration with older projects.
-MsSQL: A relational database management system for data storage and retrieval.
-PostgreSQL: An alternative relational database providing additional features and flexibility.
-RabbitMQ: A messaging queue that supports asynchronous report generation.
-Docker: Enables containerization for consistent deployments across various environments.
+    .NET Core 8.0: The main framework for building the application with modern features.
+    .NET Standard 2.0: Provides a set of APIs that can be used across different .NET implementations.
+    .NET Framework 4.8: Supports legacy applications and enables integration with older projects.
+    MsSQL: A relational database management system for data storage and retrieval.
+    PostgreSQL: An alternative relational database providing additional features and flexibility.
+    RabbitMQ: A messaging queue that supports asynchronous report generation.
+    Docker: Enables containerization for consistent deployments across various environments.
 
 ### Running the Project (Optional)
 1. **Clone the Project**:

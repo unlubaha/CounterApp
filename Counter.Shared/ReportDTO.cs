@@ -28,6 +28,3 @@ namespace Counter.Shared.DTOs
         public decimal Akim { get; set; }
     }
 }
-
-
-

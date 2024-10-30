@@ -79,3 +79,9 @@ Docker: Enables containerization for consistent deployments across various envir
     ```url
     http://localhost:{port}/swagger
     ```
+
+ 8. **Web.UI Configuration**:
+    Update and modify addresses in Javascripts.
+```bash
+const response = await fetch(`https://localhost:5179/api/Report/Reports?serialNumber=${serialNumber}`);
+```
